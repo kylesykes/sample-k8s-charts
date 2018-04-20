@@ -1,0 +1,42 @@
+# Default values for postulate.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Web Handler
+handler:
+  env:
+    service:
+      ENVIRONMENT_NAME: stub_environment_variable #Define nonsecret environmental variables here
+    auth:
+      STORAGE_ACCOUNT_NAME: dummy #Dummy variables for secret variables stored in Chart/values.yaml.  These get injected into Chart/genericwebapp/values.yaml
+  image:
+    repository: myprivaterepo.somecloudservice.com #GIVE URL OF DOCKER IMAGE IN REGISTRY HERE
+    tag: latest 
+    pullPolicy: IfNotPresent #Or 'Always' if you want to always pull the fresh image
+  replicaCount: 1 # Number of replicas to have
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+
+ingress:
+  host: sample.website.com #PUT DOMAIN NAME FOR WEB APP HERE
+  tls:
+    crt: base64 encoded cert
+    key: base64 encoded key
+
+service:
+  type: ClusterIP
+  externalPort: 80
+  internalPort: 8080 #This is whatever port your webapp is received requests on
+
+manifests: #which manifest to include.  Can use conditional ones based on environments if desired
+  handler_secret: true
+  handler: true
+  ingress: true
+  service: true
+  tls_secret: true

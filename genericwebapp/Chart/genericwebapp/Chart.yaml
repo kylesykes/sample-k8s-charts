@@ -1,0 +1,13 @@
+apiVersion: v1
+description: Generic Web App Helm chart for Kubernetes deployments
+name: genericwebapp #WEB APP NAME HERE
+version: 0.1.0
+icon: https://url-for-png.com
+keywords:
+  - web-app
+  - python
+sources:
+  - https://mygithub.github.com #This is the repository for your web application code
+maintainers:
+  - name: my_name_here
+    email: me@email.com

@@ -1,0 +1,13 @@
+# A chart for the dev environment.  Make others for more environments as needed
+handler:
+  env:
+    auth:
+      STORAGE_ACCOUNT_NAME: stub_secret_env_to_be_injected
+    service:
+      ENVIRONMENT_NAME: stub_non_secret_env
+  image:
+    tag: latest
+ingress:
+  tls:
+    crt: Stub
+    key: Stub

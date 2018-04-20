@@ -1,0 +1,24 @@
+{{ if .Values.manifests.service }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "genericwebapp.fullname" . }} #Name of the directory under Chart
+  labels:
+    app: {{ template "genericwebapp.name" . }} #Name of the directory under Chart
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: http
+      port: {{ .Values.service.externalPort }}
+      protocol: TCP
+      targetPort: {{ .Values.service.internalPort }}
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: 443
+  selector:
+    app: {{ template "handler.fullname" . }}
+{{ end }}

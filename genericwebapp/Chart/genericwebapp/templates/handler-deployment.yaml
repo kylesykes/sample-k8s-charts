@@ -1,0 +1,53 @@
+{{ if .Values.manifests.handler }}
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "handler.fullname" . }}
+  labels:
+    app: {{ template "handler.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name | quote }}
+    heritage: {{ .Release.Service | quote }}
+spec:
+  replicas: {{ .Values.handler.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "handler.fullname" . }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.handler.image.repository }}:{{ .Values.handler.image.tag }}"
+          imagePullPolicy: {{ .Values.handler.image.pullPolicy }}
+          env:
+          - name: STORAGE_ACCOUNT_NAME #This is the secret variable in Charts/values.yaml that we want the container to load as environmental variables
+            valueFrom:
+              secretKeyRef:
+                name: handler-secret
+                key: STORAGE_ACCOUNT_NAME
+{{- range $key, $val := .Values.handler.env.service }}
+          - name: {{ $key }}
+            value: {{ $val | quote }}
+{{- end }}
+          ports:
+            - containerPort: {{ .Values.service.externalPort }}
+          livenessProbe:
+            httpGet:
+              path: /status #Your webapp needs an endpoint (/status here) for k8s to ping and alert when it's alive
+              port: {{ .Values.service.internalPort }}
+            failureThreshold: 5
+            periodSeconds: 45
+            successThreshold: 1
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /status #Your webapp needs an endpoint (/status here, reusing) for k8s to ping and alert when it's ready to receive requests
+              port: {{ .Values.service.internalPort }}
+            failureThreshold: 5
+            initialDelaySeconds: 20
+            periodSeconds: 45
+            successThreshold: 1
+            timeoutSeconds: 10
+          resources:
+{{ toYaml .Values.handler.resources | indent 12 }}
+{{ end }}
