@@ -1,0 +1,24 @@
+{{ if .Values.manifests.service }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "api.fullname" . }}
+  labels:
+    app: {{ template "api.name" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: http
+      port: {{ .Values.service.http.externalPort }}
+      protocol: TCP
+      targetPort: {{ .Values.service.http.internalPort }}
+    - name: https
+      port: {{ .Values.service.https.externalPort }}
+      protocol: TCP
+      targetPort: {{ .Values.service.https.internalPort }}
+  selector:
+    app: {{ template "handler.fullname" . }}
+{{ end }}

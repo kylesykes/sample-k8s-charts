@@ -1,0 +1,55 @@
+# Default values for api.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Web Handler
+handler:
+  env:
+    #RabbitMQ settings
+    service:
+      BROKER_HOST: <releasename>-rabbitmq.<namespace>.svc.cluster.local
+      BROKER_PORT: 5672
+    auth:
+      BROKER_USER: guest
+      BROKER_PASS: guest
+  image:
+    repository: dockerhub.website.here/api
+    tag: latest
+    pullPolicy: Always
+  replicaCount: 3
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+ingress:
+  host: myroute.samplewebsite.com
+  tls:
+    crt: base64 encoded cert
+    key: base64 encoded key
+
+registry:
+  private: false
+  name: regsecret
+
+service:
+  type: ClusterIP
+  http:
+    externalPort: 80
+    internalPort: 8080
+  https:
+    externalPort: 443
+    internalPort: 443
+
+manifests:
+  backend: true
+  backend_secret: true
+  handler: true
+  ingress: true
+  service: true
+  tls_secret: true
+  cronjob: false
+  generate_models: false

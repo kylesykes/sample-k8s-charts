@@ -1,0 +1,13 @@
+apiVersion: v1
+description: api Helm chart for Kubernetes deployments
+name: api
+version: 0.1.0
+icon: https://url-for-png.com
+keywords:
+  - web-app
+  - python
+sources:
+  - https://github.com/kylesykes/sample-k8s-charts
+maintainers:
+  - name: Kyle Sykes
+    email: kyle.a.sykes@gmail.com
