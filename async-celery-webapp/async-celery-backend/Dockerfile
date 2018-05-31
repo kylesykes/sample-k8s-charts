@@ -1,8 +1,8 @@
 FROM python:3.6.3-jessie
-MAINTAINER AsyncCeleryWebApp
+MAINTAINER AsyncCeleryBackend
 
 RUN apt-get update && apt-get install -y \
-        build-essential
+    build-essential
 
 WORKDIR /app
 
@@ -13,6 +13,4 @@ RUN pip3 install -U -r /app/requirements.txt
 # Now do rest of work
 COPY . /app
 
-EXPOSE 8080
-
-CMD ["gunicorn", "-w", "1", "--bind", "0.0.0.0:8080", "request_handler:app"]
+CMD [ "celery", "worker", "-A", "tasks", "-Q", "samplequeuename" ]
