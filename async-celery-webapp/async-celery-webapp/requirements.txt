@@ -6,3 +6,5 @@ redis==2.10.6
 requests==2.18.1
 yarl==0.18.0
 gunicorn==19.7.1
+hug==2.4.0
+falcon

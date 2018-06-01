@@ -15,4 +15,8 @@ COPY . /app
 
 EXPOSE 8080
 
-CMD ["gunicorn", "-w", "1", "--bind", "0.0.0.0:8080", "request_handler:app"]
+# using hug
+CMD ["gunicorn", "-w", "1", "--bind", "0.0.0.0:8080", "hug_handler:__hug_wsgi__"] 
+
+#using aiohttp
+# CMD ["gunicorn", "-w", "1", "--bind", "0.0.0.0:8080", "request_handler:APP"]

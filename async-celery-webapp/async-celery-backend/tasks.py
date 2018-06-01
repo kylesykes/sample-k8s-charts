@@ -54,7 +54,7 @@ def setup_worker(*args, **kwargs):
     logger.info('worker setup complete')
 
 
-@CEL.task(name='samplequeuename.process')
+@CEL.task(name='helloworld')
 def hello_world(request):
     """Respond with printing Hello World"""
     logger.info('initializing samplequeuename task')

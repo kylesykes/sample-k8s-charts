@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 import sys
 import logging
 import asyncio
@@ -152,4 +149,4 @@ stdout_handler.setFormatter(stdout_formatter)
 access_log.addHandler(stdout_handler)
 LOG.addHandler(stdout_handler)
 
-web.run_app(APP, host=HOST, port=PORT, print=lambda x: LOG.info(x))
+# web.run_app(APP, host=HOST, port=PORT, print=lambda x: LOG.info(x))
